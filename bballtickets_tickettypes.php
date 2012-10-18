@@ -11,132 +11,81 @@ getThemeHeader();
 
 ?>
 
-function removeCourt(courtid){
+function removeTicketType(typeid){
  
- answer = confirm("Er du sikker på at du vil slette denne bane??")
+ answer = confirm("Er du sikker på at du vil slette denne billettype??")
  
  if (answer !=0)
  {
-   document.court.courtid.value=courtid;
-   document.court.action.value="remove";
-   document.court.submit();
+   document.type.typeid.value=typeid;
+   document.type.action.value="remove";
+   document.type.submit();
  }
  
 }
 
-function removeSeatGroup(seatgroupid){
+function editTicketType(typeid){
  
- answer = confirm("Er du sikker på at du vil slette denne plads-gruppe??")
- 
- if (answer !=0)
- {
-   document.seatgroup.seatgroupid.value=seatgroupid;
-   document.seatgroup.action.value="remove";
-   document.seatgroup.submit();
- }
- 
-}
-
-function editCourt(courtid){
- 
-   var path = "bballtickets_courts_info.php?courtid=" + courtid;
-   mywindow = window.open(path,"mywindow","menubar=1,resizable=1,width=1000,height=650");
+   var path = "bballtickets_tickettypes_info.php?typeid=" + typeid;
+   mywindow = window.open(path,"mywindow","menubar=1,resizable=1,width=500,height=480");
    
-}
-
-function editSeatGroup(seatgroupid){
- 
-    var path = "bballtickets_courts_seatgroup.php?seatgroupid=" + seatgroupid;
-    mywindow = window.open(path,"mywindow","menubar=1,resizable=1,width=1000,height=650");
-          
 }
 
 <?php
 
-getThemeTitle("Billet - Baner/Pladser");
+getThemeTitle("Billettyper");
 
 require("../../menu.php");
 
 require("bballtickets_check_database.php");
 
-if(isset($_POST['courtid'])){
+if(isset($_POST['typeid'])){
 
       if($_POST['action'] == "remove"){
-             $query = "DELETE FROM bballtickets_courts WHERE id='".$_POST['courtid']."'";
-      }elseif($_POST['courtid']=="-1"){
-             $query = "INSERT INTO bballtickets_courts (`name`,`address`,`seats`) VALUES ('".$_POST['name']."','".$_POST['address']."','".$_POST['seats']."')";
+             $query = "DELETE FROM bballtickets_tickettypes WHERE id='".$_POST['typeid']."'";
+      }elseif($_POST['typeid']=="-1"){
+             $query = "INSERT INTO bballtickets_tickettypes (`name`,`group`,`seats`,`expires`,`access`) VALUES ('".$_POST['name']."','".$_POST['group']."','".$_POST['seats']."','".$_POST['expires']."','".$_POST['access']."')";
       }else{
-             $query = "UPDATE bballtickets_courts SET `name`='".$_POST['name']."',`address`='".$_POST['address']."',`seats`= '".$_POST['seats']."' WHERE id = '".$_POST['courtid']."'";
+             $query = "UPDATE bballtickets_tickettypes SET `name`='".$_POST['name']."',`group`='".$_POST['group']."',`seats`= '".$_POST['seats']."',`expires`= '".$_POST['expires']."',`access`= '".$_POST['access']."' WHERE id = '".$_POST['typeid']."'";
+             echo $query;
       }
       mysql_query($query);
 }
 
-if(isset($_POST['seatgroupid'])){
-
-      if($_POST['action'] == "remove"){
-              $query = "DELETE FROM bballtickets_seatgroups WHERE id='".$_POST['seatgroupid']."'";
-      }elseif($_POST['seatgroupid']=="-1"){
-              $query = "INSERT INTO bballtickets_seatgroups (`name`,`court`,`seats`) VALUES ('".$_POST['name']."','".$_POST['court']."','".$_POST['seats']."')";
-      }else{
-              $query = "UPDATE bballtickets_seatgroups SET `name`='".$_POST['name']."',`court`='".$_POST['court']."',`seats`= '".$_POST['seats']."' WHERE id = '".$_POST['seatgroupid']."'";
-      }
-      mysql_query($query);
-}
-
-$query = mysql_query("SELECT * FROM `bballtickets_courts`");
+$query = mysql_query("SELECT * FROM `bballtickets_tickettypes`");
 
 while($row = mysql_fetch_assoc($query)){
-
-      $allocated = mysql_fetch_assoc(mysql_query("SELECT sum(seats) FROM bballtickets_seatgroups WHERE court='".$row['id']."'"));
-      if($allocated["sum(seats)"] == ""){
-            $allocseats = 0;
+      
+      if($row["seats"]== "unlimited"){
+           $seats = "et ubegrænset antal";
       }else{
-            $allocseats = $allocated["sum(seats)"];
+           $seats = $row["seats"];
       }
-      $courts .= '<a href="javascript:void(removeCourt(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
-      <a href="javascript:void(editCourt(\''.$row["id"].'\'))">
-      <img width="15px" src="img/edit.png"></a> '.$row["name"].' - '.$row["seats"].' pladser, '.$allocseats.' allokeret i plads-grupper<br>';
+      
+      $courts .= '<a href="javascript:void(removeTicketType(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
+      <a href="javascript:void(editTicketType(\''.$row["id"].'\'))">
+      <img width="15px" src="img/edit.png"></a> '.$row["name"].' - Giver adgang for '.$seats.' person(er)<br>';
 
 }
 
-echo "<h3>Baner:</h3> <br>".$courts."<br><br>";
+echo "<h3>Billettyper:</h3> <br>".$courts."<br><br>";
 
 ?>
 
-<form method="post" name="court">
-  <input type="hidden" id="courtid" name="courtid" value="">
+<form method="post" name="type">
+  <input type="hidden" id="typeid" name="typeid" value="">
   <input type="hidden" id="action" name="action" value="">
   <input type="hidden" id="name" name="name" value="">
   <input type="hidden" id="seats" name="seats" value="">
-  <input type="hidden" id="address" name="address" value="">
+  <input type="hidden" id="group" name="group" value="">
+  <input type="hidden" id="expires" name="expires" value="">
+  <input type="hidden" id="access" name="access" value="">
 </form>
 
-<form method="post" name="seatgroup">
-  <input type="hidden" id="seatgroupid" name="seatgroupid" value="">
-  <input type="hidden" id="action" name="action" value="">
-  <input type="hidden" id="name" name="name" value="">
-  <input type="hidden" id="seats" name="seats" value="">
-  <input type="hidden" id="court" name="court" value="">
-</form>
 
 <?php
 
-echo '<a href="javascript:void(0)" onclick="editCourt(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Bane</font>';
-
-$query = mysql_query("SELECT * FROM `bballtickets_seatgroups` ORDER BY `court` ASC");
-
-while($row = mysql_fetch_assoc($query)){
-
-            $court = mysql_fetch_assoc(mysql_query("SELECT * FROM bballtickets_courts WHERE id='".$row['court']."'"));
-            $seatgroups .= '<a href="javascript:void(removeSeatGroup(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
-            <a href="javascript:void(editSeatGroup(\''.$row["id"].'\'))">
-            <img width="15px" src="img/edit.png"></a> '.$row["name"].' - '.$row["seats"].' pladser i '.$court["name"].'<br>';
-            
-}
-
-echo "<br><br><h3>Plads-grupper:</h3> <br>".$seatgroups."<br><br>";
-
-echo '<a href="javascript:void(0)" onclick="editSeatGroup(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Plads-gruppe</font>';
+echo '<a href="javascript:void(0)" onclick="editTicketType(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Billettype</font>';
 
 getThemeBottom();
 

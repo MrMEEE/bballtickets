@@ -22,6 +22,7 @@ function loadinparent(id){
          opener.document.seatgroup.name.value=document.seatgroup.name.value;
          opener.document.seatgroup.seats.value=document.seatgroup.seats.value;
          opener.document.seatgroup.court.value=document.seatgroup.court.value;
+         opener.document.seatgroup.priority.value=document.seatgroup.priority.value;
          opener.document.seatgroup.seatgroupid.value=document.seatgroup.seatgroupid.value;
          opener.document.seatgroup.submit();
          window.close();
@@ -61,6 +62,13 @@ $(document).ready(function()
   });
 });
 
+function isNumberKey(evt){
+     var charCode = (evt.which) ? evt.which : event.keyCode
+     if (charCode > 31 && (charCode < 48 || charCode > 57))
+          return false;
+     return true;
+}
+
 <?php
 
 getThemeTitle("Bane");
@@ -86,6 +94,7 @@ if($_GET['seatgroupid'] == "-1"){
 Gruppe Navn: <br>
 Bane: <br>
 Antal Pladser: <br>
+Prioritet: <br>
 </td>
 <td VALIGN="top" style='line-height:2;' align="right">
 <input id="name" type="text" name="name" value="<?php echo $seatgroup['name'] ?>"><br>
@@ -129,7 +138,7 @@ while($row = mysql_fetch_array($res)){
   }
 ?>
 </select><br>
-
+<input id="priority" onkeypress="return isNumberKey(event)" type="text" name="priority" value="<?php echo $seatgroup['priority'] ?>"><br>
 <input type="hidden" id="seatgroupid" name="seatgroupid" value="<?php echo $_GET['seatgroupid'] ?>">
 <input name="update" type="submit" value="<?php echo $operation ?>">
 </td>

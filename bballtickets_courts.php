@@ -76,9 +76,9 @@ if(isset($_POST['seatgroupid'])){
       if($_POST['action'] == "remove"){
               $query = "DELETE FROM bballtickets_seatgroups WHERE id='".$_POST['seatgroupid']."'";
       }elseif($_POST['seatgroupid']=="-1"){
-              $query = "INSERT INTO bballtickets_seatgroups (`name`,`court`,`seats`) VALUES ('".$_POST['name']."','".$_POST['court']."','".$_POST['seats']."')";
+              $query = "INSERT INTO bballtickets_seatgroups (`name`,`court`,`seats`,`priority`) VALUES ('".$_POST['name']."','".$_POST['court']."','".$_POST['seats']."','".$_POST['priority']."')";
       }else{
-              $query = "UPDATE bballtickets_seatgroups SET `name`='".$_POST['name']."',`court`='".$_POST['court']."',`seats`= '".$_POST['seats']."' WHERE id = '".$_POST['seatgroupid']."'";
+              $query = "UPDATE bballtickets_seatgroups SET `name`='".$_POST['name']."',`court`='".$_POST['court']."',`seats`= '".$_POST['seats']."',`priority`='".$_POST['priority']."' WHERE id = '".$_POST['seatgroupid']."'";
       }
       mysql_query($query);
 }
@@ -117,6 +117,7 @@ echo "<h3>Baner:</h3> <br>".$courts."<br><br>";
   <input type="hidden" id="name" name="name" value="">
   <input type="hidden" id="seats" name="seats" value="">
   <input type="hidden" id="court" name="court" value="">
+  <input type="hidden" id="priority" name="priority" value="">
 </form>
 
 <?php
