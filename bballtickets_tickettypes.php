@@ -47,7 +47,6 @@ if(isset($_POST['typeid'])){
              $query = "INSERT INTO bballtickets_tickettypes (`name`,`group`,`seats`,`expires`,`access`) VALUES ('".$_POST['name']."','".$_POST['group']."','".$_POST['seats']."','".$_POST['expires']."','".$_POST['access']."')";
       }else{
              $query = "UPDATE bballtickets_tickettypes SET `name`='".$_POST['name']."',`group`='".$_POST['group']."',`seats`= '".$_POST['seats']."',`expires`= '".$_POST['expires']."',`access`= '".$_POST['access']."' WHERE id = '".$_POST['typeid']."'";
-             echo $query;
       }
       mysql_query($query);
 }

@@ -6,6 +6,7 @@ header('Content-type: text/backup; charset=utf-8');
 header('Content-Disposition: inline; filename=export-'.date("dmY-Hi").'.tde');
 
 $backups[] = "games";
+$backups[] = "calendars";
 $backups[] = "bballtickets_config";
 $backups[] = "bballtickets_courts";
 $backups[] = "bballtickets_seatgroups";

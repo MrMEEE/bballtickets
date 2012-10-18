@@ -29,13 +29,18 @@ echo '</script>
 
 <h1>Billetsystem</h1>
 
-<div id="main">';
+<div id="main">
+
+';
+
 
 }
 
 function getThemeBottom(){
 
-  echo '</div>
+  echo '
+  <br><br><center><a href="bballticketclient_import.php"><img src="img/sync.png" height=45px></a>&nbsp;&nbsp;<a href="bballticketclient_scan.php"><img src="img/scan.png" height=45px></a></center><br><br
+  </div>
   </body>
   </html>';
 

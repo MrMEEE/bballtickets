@@ -27,7 +27,7 @@ function loadinparent(id){
          opener.document.type.name.value=document.type.name.value;
          opener.document.type.group.value=document.type.group.value;
          opener.document.type.typeid.value=document.type.typeid.value;
-         opener.document.type.expires.value=document.type.expires.value;
+         opener.document.type.expires.value=document.type.expires.value.substr(6,4)+"-"+document.type.expires.value.substr(3,2)+"-"+document.type.expires.value.substr(0,2);
          opener.document.type.access.value=document.type.access.value;
          opener.document.type.submit();
          window.close();

@@ -1,8 +1,8 @@
 <?php
 
-require("connect.php");
+require("bballticketclient_connect.php");
 require("bballticketclient_check_database.php");
-require("theme.php");
+require("bballticketclient_theme.php");
 
 function file_get_contents_utf8($fn) {
      $content = file_get_contents($fn);
@@ -78,9 +78,6 @@ echo $message;
 
 ?>
 
-<html>
-<body>
-
 <form action="bballticketclient_import.php" method="post" enctype="multipart/form-data">
 <label for="file">Filename:</label>
 <input type="file" name="file" id="file" />
@@ -88,5 +85,8 @@ echo $message;
 <input type="submit" name="submit" value="Importer Fil" />
 </form>
 
-</body>
-</html>
+<?php
+
+getThemeBottom();
+
+?>
