@@ -146,7 +146,7 @@ if(isset($_POST['scan'])){
     
     
     
-    mysql_query("INSERT INTO `bballtickets_checkins` (`game`,`code`,`status`,`seatgroup`) VALUES ('".$_POST['game']."','".$scan."','".$status."','".$seatgroup."')");
+    mysql_query("INSERT INTO `bballtickets_checkins` (`game`,`code`,`status`,`seatgroup`,`new`) VALUES ('".$_POST['game']."','".$scan."','".$status."','".$seatgroup."','1')");
 
 }
 

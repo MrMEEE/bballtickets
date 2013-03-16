@@ -3,10 +3,10 @@
 
 /* Database config */
 
-$db_host		= 'HOST';
-$db_user		= 'USER';
-$db_pass		= 'PASS';
-$db_database		= 'DB'; 
+$db_host		= 'localhost';
+$db_user		= 'root';
+$db_pass		= 'Martin123!';
+$db_database		= 'ticketclient'; 
 
 /* End config */
 

@@ -96,6 +96,14 @@ while($row = mysql_fetch_assoc($query)){
       $courts .= '<a href="javascript:void(removeCourt(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
       <a href="javascript:void(editCourt(\''.$row["id"].'\'))">
       <img width="15px" src="img/edit.png"></a> '.$row["name"].' - '.$row["seats"].' pladser, '.$allocseats.' allokeret i plads-grupper<br>';
+      $seatgroups = mysql_query("SELECT * FROM `bballtickets_seatgroups` WHERE `court`='".$row['id']."'"); 
+      while($seatgroup = mysql_fetch_assoc($seatgroups)){
+      
+      $courts .= '&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(removeSeatGroup(\''.$seatgroup["id"].'\'))"><img width="15px" src="img/remove.png"></a>
+      <a href="javascript:void(editSeatGroup(\''.$seatgroup["id"].'\'))">
+      <img width="15px" src="img/edit.png"></a> '.$seatgroup["name"].' - '.$seatgroup["seats"].' pladser<br>';
+      
+      }
 
 }
 
@@ -122,20 +130,7 @@ echo "<h3>Baner:</h3> <br>".$courts."<br><br>";
 
 <?php
 
-echo '<a href="javascript:void(0)" onclick="editCourt(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Bane</font>';
-
-$query = mysql_query("SELECT * FROM `bballtickets_seatgroups` ORDER BY `court` ASC");
-
-while($row = mysql_fetch_assoc($query)){
-
-            $court = mysql_fetch_assoc(mysql_query("SELECT * FROM bballtickets_courts WHERE id='".$row['court']."'"));
-            $seatgroups .= '<a href="javascript:void(removeSeatGroup(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
-            <a href="javascript:void(editSeatGroup(\''.$row["id"].'\'))">
-            <img width="15px" src="img/edit.png"></a> '.$row["name"].' - '.$row["seats"].' pladser i '.$court["name"].'<br>';
-            
-}
-
-echo "<br><br><h3>Plads-grupper:</h3> <br>".$seatgroups."<br><br>";
+echo '<a href="javascript:void(0)" onclick="editCourt(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Bane</font><br>';
 
 echo '<a href="javascript:void(0)" onclick="editSeatGroup(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Plads-gruppe</font>';
 

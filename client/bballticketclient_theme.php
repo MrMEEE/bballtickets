@@ -29,6 +29,8 @@ echo '</script>
 
 <h1>Billetsystem</h1>
 
+<center><a href="bballticketclient_import.php"><img src="img/sync.png" height=45px></a>&nbsp;&nbsp;<a href="bballticketclient_scan.php"><img src="img/scan.png" height=45px></a></center><br><br>
+
 <div id="main">
 
 ';
@@ -39,7 +41,6 @@ echo '</script>
 function getThemeBottom(){
 
   echo '
-  <br><br><center><a href="bballticketclient_import.php"><img src="img/sync.png" height=45px></a>&nbsp;&nbsp;<a href="bballticketclient_scan.php"><img src="img/scan.png" height=45px></a></center><br><br
   </div>
   </body>
   </html>';

@@ -11,5 +11,8 @@ if(!mysql_num_rows(mysql_query("SHOW COLUMNS FROM 'bballtickets_courts'"))){
       mysql_query("CREATE TABLE `bballtickets_tickets` (`id` int(11) NOT NULL AUTO_INCREMENT, `name` text NOT NULL, `type` int(11) NOT NULL, `suspended` tinyint(1) NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
       mysql_query("CREATE TABLE `bballtickets_checkins` (`id` int(11) NOT NULL AUTO_INCREMENT, `game` int(11) NOT NULL, `code` text NOT NULL, `status` int(11) NOT NULL, `seatgroup` int(11) NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
 }
+if(!mysql_num_rows(mysql_query("SHOW COLUMNS FROM 'bballtickets_clients'"))){
+      mysql_query("CREATE TABLE `bballtickets_clients` (`id` int(11) NOT NULL AUTO_INCREMENT, `clientname` text NOT NULL, `clientid` text NOT NULL, `clientpass` text NOT NULL, `approved` boolean NOT NULL,PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
+}
 
 ?>
