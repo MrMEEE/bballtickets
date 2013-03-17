@@ -1,7 +1,7 @@
 <?php
 
 if(!mysql_num_rows(mysql_query("SHOW TABLES LIKE 'bballtickets_config'"))){
-      mysql_query("CREATE TABLE `bballtickets_config` (`id` int(11) NOT NULL AUTO_INCREMENT, `hold` text NOT NULL,PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
+      mysql_query("CREATE TABLE `bballtickets_config` (`id` int(11) NOT NULL AUTO_INCREMENT, `hold` text NOT NULL, `template` text NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");
 }
 if(!mysql_num_rows(mysql_query("SHOW TABLES LIKE 'bballticketclient_config'"))){
       mysql_query("CREATE TABLE `bballticketclient_config` (`id` int(11) NOT NULL AUTO_INCREMENT, `masterurl` text NOT NULL, `clientname` text NOT NULL, `clientid` text NOT NULL,`clientpass` text NOT NULL, `lastupdate` text NOT NULL, PRIMARY KEY (`id`)) ENGINE=MyISAM  DEFAULT CHARSET=latin1 AUTO_INCREMENT=1");

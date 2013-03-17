@@ -15,6 +15,12 @@ require("../../menu.php");
 
 require("bballtickets_check_database.php");
 
+if(isset($_POST['template'])){
+
+      mysql_query("UPDATE `bballtickets_config` SET `template`='".$_POST['template']."' WHERE `id`='1'");
+
+}
+
 $config = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_config` WHERE `id`=1"));
 
 $hold = explode(",",$config['hold']);
@@ -54,6 +60,30 @@ while($row = mysql_fetch_assoc($query)){
       }
 
 }
+
+echo "<h3>Kort Template:</h3><br>";
+echo '<form method="post">';
+echo '<select id="template" name="template" onchange="this.form.submit()">';
+if(($config['template'] == "") && ($config['template'] == "")){
+    $status = "selected";
+}
+
+echo '<option value="-" '.$status.'>--- Ingen template valgt ---</option>';
+
+if ($handle = opendir('templates/')) {
+
+    while (false !== ($entry = readdir($handle))) {
+         if(($entry != ".") && ($entry != "..")){
+               if($config['template'] == $entry){
+                     $status = "selected";
+               }
+               echo '<option value"'.$entry.'" '.$status.'>'.$entry.'</option>';
+         }
+    }
+}
+echo "</select>";
+echo "</form>";
+echo "<br><br>";
 
 echo "<h3>Hold med billetsystem aktiveret:</h3> <br>".$stats."<br><br>";
 echo "<h3>Hold uden billetsystem aktiveret:</h3> <br>".$nostats."<br><br>";

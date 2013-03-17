@@ -6,6 +6,7 @@ require("../../checkConfig.php");
 require("../../checkLogin.php");
 require("../../checkAdmin.php");
 require("../../theme.php");
+require("bballtickets_functions.php");
 
 getThemeHeader();
 
@@ -17,11 +18,18 @@ function removeTicket(ticketid){
  
  if (answer !=0)
  {
-   document.ticket.typeid.value=ticketid;
+   document.ticket.ticketid.value=ticketid;
    document.ticket.action.value="remove";
    document.ticket.submit();
  }
  
+}
+
+function printTicket(ticketid){
+
+ var path = "bballtickets_tickets_print.php?ticketid=" + ticketid;
+ mywindow = window.open(path,"mywindow","menubar=1,resizable=1,width=500,height=480");
+
 }
 
 function editTicket(ticketid){
@@ -39,15 +47,18 @@ require("../../menu.php");
 
 require("bballtickets_check_database.php");
 
+$config = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_config` WHERE `id`=1"));
+
 if(isset($_POST['ticketid'])){
       if($_POST['action'] == "remove"){
-             $query = "DELETE FROM bballtickets_tickets WHERE id='".$_POST['typeid']."'";
+             $query = "DELETE FROM bballtickets_tickets WHERE id='".$_POST['ticketid']."'";
       }elseif($_POST['ticketid']=="-1"){
              $query = "INSERT INTO bballtickets_tickets (`name`,`type`,`suspended`) VALUES ('".$_POST['name']."','".$_POST['type']."','0')";
       }else{
              $query = "UPDATE bballtickets_tickets SET `name`='".$_POST['name']."',`type`='".$_POST['type']."',`suspended`= '".$_POST['suspended']."' WHERE id = '".$_POST['ticketid']."'";
       }
       mysql_query($query);
+      
 }
 
 $query = mysql_query("SELECT * FROM `bballtickets_tickets`");
@@ -55,8 +66,8 @@ $query = mysql_query("SELECT * FROM `bballtickets_tickets`");
 while($row = mysql_fetch_assoc($query)){
       $type = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_tickettypes` WHERE id='".$row['type']."'"));
       $tickets .= '<a href="javascript:void(removeTicket(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
-      <a href="javascript:void(editTicket(\''.$row["id"].'\'))">
-      <img width="15px" src="img/edit.png"></a> '.str_pad((int) $row['type'],"4","0",STR_PAD_LEFT).str_pad((int) $row['id'],"10","0",STR_PAD_LEFT)." - ".$row["name"].' - '.$type["name"].'<br>';
+      <a href="javascript:void(printTicket(\''.$row["id"].'\'))">
+      <img width="15px" src="img/card.png"></a><a href="javascript:void(editTicket(\''.$row["id"].'\'))"> <img width="15px" src="img/edit.png"></a> '.str_pad((int) $row['type'],"4","0",STR_PAD_LEFT).str_pad((int) $row['id'],"10","0",STR_PAD_LEFT)." - ".$row["name"].' - '.$type["name"].'<br>';
 
 }
 
