@@ -46,9 +46,24 @@ function viewBarcode(barcodeid){
 
 }
 
+function goBatch(){
+   
+   document.ticketlist.submit();
+
+}
+
 <?php
 
 getThemeTitle("Billet/Kort");
+
+if($_POST['action'] == "barcodelist"){
+
+foreach($_POST['checkbox'] as $checkbox){
+    echo '<img src="barcodes/'.$checkbox.'.jpg"><br>';
+    echo $checkbox . '<br>';
+}
+
+}else{
 
 require("../../menu.php");
 
@@ -70,10 +85,13 @@ if(isset($_POST['ticketid'])){
 
 $query = mysql_query("SELECT * FROM `bballtickets_tickets`");
 
+echo '<form name=ticketlist method="post" action="bballtickets_tickets.php" target="_blank">';
+
 while($row = mysql_fetch_assoc($query)){
       $type = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_tickettypes` WHERE id='".$row['type']."'"));
       $barcodeid = str_pad((int) $row['type'],"4","0",STR_PAD_LEFT).str_pad((int) $row['id'],"10","0",STR_PAD_LEFT);
-      $tickets .= '<a href="javascript:void(removeTicket(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png" title="Slet Kort/Billet"></a>
+      $tickets .= '<input type="checkbox" value="'.$barcodeid.'" name="checkbox[]">
+      <a href="javascript:void(removeTicket(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png" title="Slet Kort/Billet"></a>
       <a href="javascript:void(printTicket(\''.$row["id"].'\'))" title="Print Kort/Billet">
       <img width="15px" src="img/card.png"></a>
       <a href="javascript:void(viewBarcode(\''.$barcodeid.'\'))" title="Vis Stregkode">
@@ -82,7 +100,15 @@ while($row = mysql_fetch_assoc($query)){
 
 }
 
-echo "<h3>Billetter/Kort:</h3> <br>".$tickets."<br><br>";
+
+echo "<h3>Billetter/Kort:</h3> <br>".$tickets."<br>";
+
+echo '<select name="action" onChange="goBatch()">
+       <option value="-" selected>Vælg operation</option>
+       <option value="barcodelist">Vis stregkoder</option>
+      </select>';
+
+echo '</form><br><br>';
 
 ?>
 
@@ -100,5 +126,7 @@ echo "<h3>Billetter/Kort:</h3> <br>".$tickets."<br><br>";
 echo '<a href="javascript:void(0)" onclick="editTicket(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Billet/Kort</font>';
 
 getThemeBottom();
+
+}
 
 ?>

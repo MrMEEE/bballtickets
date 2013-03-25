@@ -105,6 +105,21 @@ if(isset($_FILES['file'])){
 }
 
 getThemeHeader();
+?>
+function removeCheckins(ticketid){
+
+ answer = confirm("Er du sikker på at du vil slette alle lokale indcheckninger???")
+
+ if (answer !=0) {
+   answer = confirm("Er du HELT sikker??, disse data er ikke sendt til master-serveren!!!!")
+   if (answer !=0){
+    document.checkin.action.value="removeCheckins";
+    document.checkin.submit();
+   }
+ }
+
+}
+<?php
 getThemeTitle();
 
 $clientconfig = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballticketclient_config` WHERE id='1'"));
@@ -144,6 +159,11 @@ $message .= '<font color="red">Denne Klient er ikke blevet godkendt på Master S
 
 if($_POST['action'] == "download"){
       importDownload($result);
+
+}
+if($_POST['action'] == "removeCheckins"){
+      
+      mysql_query("DELETE FROM `bballtickets_checkins` WHERE `new` = 1");
 
 }
 
@@ -212,7 +232,13 @@ echo '<form action="bballticketclient_import.php" method="post" name="data">
       <input type="hidden" name="action" value="download">
       <input type="submit" value='.$status.'>
       </form><br>';
-echo 'Sidst Opdateret: '.$clientconfig['lastupdate'].'<br><br><br><br>';
+echo '<form action="bballticketclient_import.php" method="post" name="checkin">
+      <input type="hidden" name="action">
+      </form>';
+
+echo 'Sidst Opdateret: '.$clientconfig['lastupdate'].'<br><br>';
+
+echo '<input type="submit" value="Slet lokale checkins" onClick="return removeCheckins();" /><br><br><br><br>';
 
 ?>
 

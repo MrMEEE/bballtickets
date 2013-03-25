@@ -184,6 +184,12 @@ if(!isset($_POST['game'])){
            <input id="game" name="game" type="hidden" value="'.$_POST['game'].'">
           </form></center>';
     echo '<br><center><h3><font color="'.$color.'">'.$message.'</font></h3></center><br>';
+    if($color == "red"){
+        echo '<embed src="sound/error.mp3" width="0" height="0" autoplay="true" loop="false"></embed>';
+    }
+    if($color == "green"){
+        echo '<embed src="sound/ok.mp3" width="0" height="0" autoplay="true" loop="false"></embed>';
+    }
 }
 getThemeBottom();
 
