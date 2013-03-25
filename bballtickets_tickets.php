@@ -39,6 +39,13 @@ function editTicket(ticketid){
    
 }
 
+function viewBarcode(barcodeid){
+
+   var path = "bballtickets_tickets_barcode.php?id=" + barcodeid;
+   mywindow = window.open(path,"mywindow","menubar=1,resizable=1,width=500,height=150");
+
+}
+
 <?php
 
 getThemeTitle("Billet/Kort");
@@ -65,9 +72,13 @@ $query = mysql_query("SELECT * FROM `bballtickets_tickets`");
 
 while($row = mysql_fetch_assoc($query)){
       $type = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_tickettypes` WHERE id='".$row['type']."'"));
-      $tickets .= '<a href="javascript:void(removeTicket(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
-      <a href="javascript:void(printTicket(\''.$row["id"].'\'))">
-      <img width="15px" src="img/card.png"></a><a href="javascript:void(editTicket(\''.$row["id"].'\'))"> <img width="15px" src="img/edit.png"></a> '.str_pad((int) $row['type'],"4","0",STR_PAD_LEFT).str_pad((int) $row['id'],"10","0",STR_PAD_LEFT)." - ".$row["name"].' - '.$type["name"].'<br>';
+      $barcodeid = str_pad((int) $row['type'],"4","0",STR_PAD_LEFT).str_pad((int) $row['id'],"10","0",STR_PAD_LEFT);
+      $tickets .= '<a href="javascript:void(removeTicket(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png" title="Slet Kort/Billet"></a>
+      <a href="javascript:void(printTicket(\''.$row["id"].'\'))" title="Print Kort/Billet">
+      <img width="15px" src="img/card.png"></a>
+      <a href="javascript:void(viewBarcode(\''.$barcodeid.'\'))" title="Vis Stregkode">
+      <img width="15px" src="img/barcode.jpg"></a>
+      <a href="javascript:void(editTicket(\''.$row["id"].'\'))"> <img width="15px" src="img/edit.png" title="Rediger Kort/Billet"></a> '.$barcodeid." - ".$row["name"].' - '.$type["name"].'<br>';
 
 }
 

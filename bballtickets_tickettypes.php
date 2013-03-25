@@ -51,7 +51,7 @@ if(isset($_POST['typeid'])){
       mysql_query($query);
 }
 
-$query = mysql_query("SELECT * FROM `bballtickets_tickettypes`");
+$query = mysql_query("SELECT * FROM `bballtickets_tickettypes` WHERE `expires` > CURDATE() OR `expires`=0000-00-00");
 
 while($row = mysql_fetch_assoc($query)){
       
@@ -61,13 +61,30 @@ while($row = mysql_fetch_assoc($query)){
            $seats = $row["seats"];
       }
       
-      $courts .= '<a href="javascript:void(removeTicketType(\''.$row["id"].'\'))"><img width="15px" src="img/remove.png"></a>
-      <a href="javascript:void(editTicketType(\''.$row["id"].'\'))">
+      $types .= '<a href="javascript:void(removeTicketType(\''.$row["id"].'\'))" title="Slet Billettype"><img width="15px" src="img/remove.png"></a>
+      <a href="javascript:void(editTicketType(\''.$row["id"].'\'))" title="Rediger Billettype">
       <img width="15px" src="img/edit.png"></a> '.$row["name"].' - Giver adgang for '.$seats.' person(er)<br>';
 
 }
 
-echo "<h3>Billettyper:</h3> <br>".$courts."<br><br>";
+$query = mysql_query("SELECT * FROM `bballtickets_tickettypes` WHERE `expires` < CURDATE() AND `expires` != '0000-00-00'");
+
+while($row = mysql_fetch_assoc($query)){
+      
+      if($row["seats"]== "unlimited"){
+           $seats = "et ubegrænset antal";
+      }else{
+           $seats = $row["seats"];
+      }
+      
+      $oldtypes .= '<a href="javascript:void(removeTicketType(\''.$row["id"].'\'))" title="Slet Billettype"><img width="15px" src="img/remove.png"></a>
+      <a href="javascript:void(editTicketType(\''.$row["id"].'\'))" title="Rediger Billettype">
+      <img width="15px" src="img/edit.png"></a> '.$row["name"].' - Giver adgang for '.$seats.' person(er)<br>';
+
+}
+
+
+echo "<h3>Billettyper:</h3> <br>".$types."<br><br>";
 
 ?>
 
@@ -84,7 +101,9 @@ echo "<h3>Billettyper:</h3> <br>".$courts."<br><br>";
 
 <?php
 
-echo '<a href="javascript:void(0)" onclick="editTicketType(-1);"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Billettype</font>';
+echo '<a href="javascript:void(0)" onclick="editTicketType(-1);" title="Tilføj Billettype"><img width="25px" src="img/add.png"></a> <font size="3">Tilføj Billettype</font><br><br>';
+
+echo "<h3>Udløbne Billettyper:</h3> <br>".$oldtypes."<br><br>";
 
 getThemeBottom();
 
