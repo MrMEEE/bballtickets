@@ -64,7 +64,10 @@ if(!isset($_POST['game'])){
            <input id="action" name="action" type="hidden" value="scan">
           </form></center>';
     echo '<br><center><h3><div id=message name=message></div></h3></center><br>';
-    echo '<br><center><h3><font color="'.$color.'">'.$message.'</font></h3></center><br>';
+    $query = "SELECT * FROM `bballtickets_checkins` WHERE `game` = ".$_POST['game']." AND `status` = 0";
+    $checkins = mysql_num_rows(mysql_query($query));
+    echo '<br><center><h3><div id=checkedins name=checkedins><font color="blue" size="16px">'.$checkins.'</font></div></h3></center><br>';
+
 }
 getThemeBottom();
 
@@ -77,6 +80,7 @@ $('#scanform').submit(function() {
   $.ajax({type: "POST", url: "ajax.php",dataType: "json",data: form.serialize(),success: function(data){
      $("#scan").val('');
      $("#message").html('<font color="'+data.color+'">'+data.message+'</font>');
+     $("#checkedins").html('<font color="blue" size="16px">'+data.checkins+'</font>');
   },error: function(xhr, status, err) {
      alert(status + ": " + err);
   }

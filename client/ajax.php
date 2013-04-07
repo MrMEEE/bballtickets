@@ -121,10 +121,16 @@ if(isset($_POST['scan'])){
     
     $query = "INSERT INTO `bballtickets_checkins` (`game`,`code`,`status`,`seatgroup`,`new`) VALUES ('".$_POST['game']."','".$scan."','".$status."','".$seatgroup."','1')";
     mysql_query($query);
-}        
+}     
+        $query = "SELECT * FROM `bballtickets_checkins` WHERE `game` = ".$_POST['game']." AND `status` = 0";
+        $query = mysql_query($query);
+        
+        $checkins = mysql_num_rows($query);
+           
         $json = '{ ';
         $json .= '"message" : "'.$message.'", ';
         $json .= '"status" : "'.$status.'", ';
+        $json .= '"checkins" : "'.$checkins.'", '; 
         $json .= '"color" : "'.$color.'"';
         $json .= "}";
         
