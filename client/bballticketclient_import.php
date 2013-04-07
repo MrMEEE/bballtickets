@@ -124,7 +124,7 @@ getThemeTitle();
 
 $clientconfig = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballticketclient_config` WHERE id='1'"));
 
-if(url_exists($clientconfig['masterurl'].'/admin/plugins/bballtickets/bballtickets_importexport.php') == "302"){
+if((url_exists($clientconfig['masterurl'].'/admin/plugins/bballtickets/bballtickets_importexport.php') == "302") || (url_exists($clientconfig['masterurl'].'/admin/plugins/bballtickets/bballtickets_importexport.php') == "200")){
 
 $url = $clientconfig['masterurl'].'/admin/plugins/bballtickets/bballtickets_importexport.php';
 $fields = array(
