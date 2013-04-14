@@ -49,7 +49,7 @@ echo '<script type="application/javascript">
             mychart.draw();
         }
       
-    </script><br><br>';
+    </script><div id="listholder" name="listholder"></div><br><br>';
 
 $config = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_config` WHERE id='1'"));
 $teams = explode(",",$config['hold']);
@@ -80,6 +80,11 @@ foreach($teams as $teamid){
     echo '<br><select id="game" name="game">
            <option value="all" selected>Alle Kampe</option>
            '.$gamelist.'
+          </select><br>';
+    echo '<select name="show" id="show">
+           <option value="default" selected>Horizontalt</option>
+           <option value="doughnut">Cirkel</option>
+           <option value="list">Liste</option>
           </select>';
     echo '<br><br><input type="submit" value="opdater"><br><br>';
     echo '<input type="hidden" id="action" name="action" value="update">';
@@ -92,22 +97,52 @@ getThemeBottom();
 
 <script type="text/javascript">
 
+$(document).ready(function() {
+   $('#canvas1').attr("height", "0");
+});
+
 $('#tickettypelist').submit(function() {
   var form = $('#tickettypelist');
   $.ajax({type: "POST", url: "ajax.php",dataType: "json",data: form.serialize(),success: function(data){
-     
-     var values = [];
-     $.each(data.values,function(index,value) {
-      values.push(value);
-     });
-     mychart.data=values;
-     var names = [];
-     
-     $.each(data.names,function(index,value) {
-      names.push(value);
-     });
-     mychart.labels=names;
-     mychart.animateBarChart();
+         var values = [];
+         $.each(data.values,function(index,value) {
+          values.push(value);
+         });
+         mychart.data=values;
+         var names = [];
+         $.each(data.names,function(index,value) {
+          names.push(value);
+         });
+         mychart.labels=names;
+         $('#listholder').html("");
+     switch($('#show').val()){     
+         case "default":
+          $('#canvas1').attr("height", "500");
+          mychart.chartType = 'default';
+          mychart.animateBarChart();
+         break;
+         case "doughnut":
+          $('#canvas1').attr("height", "500");
+          mychart.chartType = 'doughnut';
+          mychart.animatePieChart("pie");
+         break;
+         /*case "horizontal bars":
+          $('#canvas1').attr("height", "500");
+          mychart.chartType = 'horizontal bars';
+          mychart.draw();
+          mychart.animateVerticalBarChart();
+         break;*/
+         case "list":
+          var html;
+          html = "";
+          for (i = 0; i < names.length; ++i ){
+           html += names[i]+" : "+values[i]+"<br>";
+          }
+          $('#canvas1').attr("height", "0");
+          $('#listholder').html(html);
+         break;
+         
+     }
   },error: function(xhr, status, err) {
      alert(status + ": " + err);
   }
