@@ -1,5 +1,5 @@
 <?php
 
-  $bballticketsversion="1.0";
+  $bballticketsversion="1.1";
 
 ?>

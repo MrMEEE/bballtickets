@@ -81,6 +81,7 @@ $('#scanform').submit(function() {
      $("#scan").val('');
      $("#message").html('<font color="'+data.color+'">'+data.message+'</font>');
      $("#checkedins").html('<font color="blue" size="16px">'+data.checkins+'</font>');
+//     if(data.color == "red")
   },error: function(xhr, status, err) {
      alert(status + ": " + err);
   }
