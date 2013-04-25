@@ -31,6 +31,25 @@ function editTicketType(typeid){
    
 }
 
+function copyTicketType(typeid,typename){
+
+ var newname = prompt("Indtast navn til kopien","Kopi af "+typename);
+ 
+ if (newname==null || newname==""){
+ 
+   alert("Det nye navn må ikke være tomt.");
+ 
+ }else{
+ 
+   document.type.typeid.value=typeid;
+   document.type.typename.value=newname;
+   document.type.action.value="copy";
+   document.type.submit();
+ 
+ }
+
+}
+
 <?php
 
 getThemeTitle("Billettyper");
@@ -40,13 +59,20 @@ require("../../menu.php");
 require("bballtickets_check_database.php");
 
 if(isset($_POST['typeid'])){
-
-      if($_POST['action'] == "remove"){
-             $query = "DELETE FROM bballtickets_tickettypes WHERE id='".$_POST['typeid']."'";
-      }elseif($_POST['typeid']=="-1"){
-             $query = "INSERT INTO bballtickets_tickettypes (`name`,`group`,`seats`,`expires`,`access`) VALUES ('".$_POST['name']."','".$_POST['group']."','".$_POST['seats']."','".$_POST['expires']."','".$_POST['access']."')";
-      }else{
-             $query = "UPDATE bballtickets_tickettypes SET `name`='".$_POST['name']."',`group`='".$_POST['group']."',`seats`= '".$_POST['seats']."',`expires`= '".$_POST['expires']."',`access`= '".$_POST['access']."' WHERE id = '".$_POST['typeid']."'";
+      switch($_POST['action']){
+             case "remove" :
+                    $query = "DELETE FROM bballtickets_tickettypes WHERE id='".$_POST['typeid']."'";
+             break;
+             case "create" :
+                    $query = "INSERT INTO bballtickets_tickettypes (`name`,`group`,`seats`,`expires`,`access`) VALUES ('".$_POST['name']."','".$_POST['group']."','".$_POST['seats']."','".$_POST['expires']."','".$_POST['access']."')";
+             break;
+             case "copy" : 
+                    $source = mysql_fetch_assoc(mysql_query("SELECT * FROM bballtickets_tickettypes WHERE `id`='".$_POST['typeid']."'"));
+                    $query = "INSERT INTO bballtickets_tickettypes (`name`,`group`,`seats`,`expires`,`access`) VALUES ('".$_POST['typename']."','".$source['group']."','".$source['seats']."','".$source['expires']."','".$source['access']."')";
+             break;
+             default:
+                    $query = "UPDATE bballtickets_tickettypes SET `name`='".$_POST['name']."',`group`='".$_POST['group']."',`seats`= '".$_POST['seats']."',`expires`= '".$_POST['expires']."',`access`= '".$_POST['access']."' WHERE id = '".$_POST['typeid']."'";
+             break; 
       }
       mysql_query($query);
 }
@@ -62,6 +88,8 @@ while($row = mysql_fetch_assoc($query)){
       }
       
       $types .= '<a href="javascript:void(removeTicketType(\''.$row["id"].'\'))" title="Slet Billettype"><img width="15px" src="img/remove.png"></a>
+      <a href="javascript:void(copyTicketType(\''.$row["id"].'\',\''.$row["name"].'\'))" title="Kopier Billettype">
+      <img width="15px" src="img/copy.png"></a>
       <a href="javascript:void(editTicketType(\''.$row["id"].'\'))" title="Rediger Billettype">
       <img width="15px" src="img/edit.png"></a> '.$row["name"].' - Giver adgang for '.$seats.' person(er)<br>';
 
@@ -78,6 +106,8 @@ while($row = mysql_fetch_assoc($query)){
       }
       
       $oldtypes .= '<a href="javascript:void(removeTicketType(\''.$row["id"].'\'))" title="Slet Billettype"><img width="15px" src="img/remove.png"></a>
+      <a href="javascript:void(copyTicketType(\''.$row["id"].'\',\''.$row["name"].'\'))" title="Kopier Billettype">
+      <img width="15px" src="img/copy.png"></a>
       <a href="javascript:void(editTicketType(\''.$row["id"].'\'))" title="Rediger Billettype">
       <img width="15px" src="img/edit.png"></a> '.$row["name"].' - Giver adgang for '.$seats.' person(er)<br>';
 
@@ -90,6 +120,7 @@ echo "<h3>Billettyper:</h3> <br>".$types."<br><br>";
 
 <form method="post" name="type">
   <input type="hidden" id="typeid" name="typeid" value="">
+  <input type="hidden" id="typename" name="typename" value="">
   <input type="hidden" id="action" name="action" value="">
   <input type="hidden" id="name" name="name" value="">
   <input type="hidden" id="seats" name="seats" value="">

@@ -29,6 +29,7 @@ function loadinparent(id){
          opener.document.type.typeid.value=document.type.typeid.value;
          opener.document.type.expires.value=document.type.expires.value.substr(6,4)+"-"+document.type.expires.value.substr(3,2)+"-"+document.type.expires.value.substr(0,2);
          opener.document.type.access.value=document.type.access.value;
+         opener.document.type.action.value=document.type.action.value;
          opener.document.type.submit();
          window.close();
     }
@@ -194,6 +195,17 @@ foreach($teams as $teamid){
 </select><br>
 
 <input type="hidden" id="typeid" name="typeid" value="<?php echo $_GET['typeid'] ?>">
+
+<input type="hidden" id="action" name="action" value="<?php 
+
+if($_GET['typeid'] == "-1"){
+     echo 'create';
+}else{
+     echo 'update';
+}
+
+?>">
+
 <input type="hidden" id="access" name="access">
 <input type="hidden" id="group" name="group">
 <input name="update" type="submit" value="<?php echo $operation ?>">
