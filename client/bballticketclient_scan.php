@@ -89,4 +89,10 @@ $('#scanform').submit(function() {
   
   return false;
 });
+$().ready(function() {
+
+locked = window.setInterval(function(){
+    $("#scan").focus();}, 200);
+             
+});
 </script>
