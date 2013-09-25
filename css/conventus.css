@@ -1,0 +1,36 @@
+#popUpDiv{
+    z-index: 100;
+    position: fixed;
+    background-color: rgba(123, 123,123, 0.9);
+    display: none;
+    top: 180px;
+    left: 30%;
+    width: 30%;
+    height: 210px;
+}
+#popupSelect{
+    z-index: 1000;
+    position: absolute;
+    top: 130px;
+    left: 50px;
+}
+#popupOk{
+    z-index: 2000;
+    position: absolute;
+    top: 160px;
+    left: 50px;
+}
+#popupCancel{
+    z-index: 2000;
+    position: absolute;
+    top: 160px;
+    left: 90px;
+}
+#popupContent{
+    z-index: 2000;
+    position: absolute;
+    top: 75px;
+    left: 50px;
+    color: #FFFFFF;
+    font-size: large;
+}

@@ -73,7 +73,10 @@ $config = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_config` WHE
 
 if(isset($_POST['ticketid'])){
       if($_POST['action'] == "remove"){
+             $ticket = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_tickets` WHERE `id`='".$_POST['ticketid']."'"));
              $query = "DELETE FROM bballtickets_tickets WHERE id='".$_POST['ticketid']."'";
+             $barcodeid = str_pad((int) $ticket['type'],"4","0",STR_PAD_LEFT).str_pad((int) $ticket['id'],"10","0",STR_PAD_LEFT);
+             mysql_query("UPDATE `bballtickets_conventus` SET `ticketid`='' WHERE `ticketid`='".$barcodeid."'");
       }elseif($_POST['ticketid']=="-1"){
              $query = "INSERT INTO bballtickets_tickets (`name`,`type`,`suspended`) VALUES ('".$_POST['name']."','".$_POST['type']."','0')";
       }else{
