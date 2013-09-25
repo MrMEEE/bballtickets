@@ -8,9 +8,9 @@ echo '
                   <li class="first"><a href="http://' . $klubadresse . $klubpath . '/admin/plugins/bballtickets/bballtickets_courts.php">Baner/Pladser</a></li>
                   <li><a href="http://' . $klubadresse . $klubpath . '/admin/plugins/bballtickets/bballtickets_tickettypes.php">Billettyper</a></li>
                   <li><a href="http://' . $klubadresse . $klubpath . '/admin/plugins/bballtickets/bballtickets_tickets.php">Billetter/Kort</a></li>';
-if($config['convensus_enabled']){
+if($config['conventus_enabled']){
 
-      echo '<li><a href="http://' . $klubadresse . $klubpath . '/admin/plugins/bballtickets/bballtickets_convensustickets.php">Convensus Plugin</a></li>';
+      echo '<li><a href="http://' . $klubadresse . $klubpath . '/admin/plugins/bballtickets/bballtickets_conventustickets.php">Conventus Plugin</a></li>';
 
 }                  
                   

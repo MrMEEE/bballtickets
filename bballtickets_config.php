@@ -15,33 +15,33 @@ require("../../menu.php");
 
 require("bballtickets_check_database.php");
 
-if(isset($_POST['convensus_id'])){
+if(isset($_POST['conventus_id'])){
     
-    mysql_query("UPDATE `bballtickets_config` SET `convensus_id`='".$_POST['convensus_id']."' WHERE `id`='1'");
+    mysql_query("UPDATE `bballtickets_config` SET `conventus_id`='".$_POST['conventus_id']."' WHERE `id`='1'");
 
 }
 
-if(isset($_POST['convensus_grouptype'])){ 
+if(isset($_POST['conventus_grouptype'])){ 
     
-    mysql_query("UPDATE `bballtickets_config` SET `convensus_grouptype`='".$_POST['convensus_grouptype']."' WHERE `id`='1'");
+    mysql_query("UPDATE `bballtickets_config` SET `conventus_grouptype`='".$_POST['conventus_grouptype']."' WHERE `id`='1'");
          
 }
 
-if(isset($_POST['convensus_groupid'])){ 
+if(isset($_POST['conventus_groupid'])){ 
     
-    mysql_query("UPDATE `bballtickets_config` SET `convensus_groupid`='".$_POST['convensus_groupid']."' WHERE `id`='1'");
+    mysql_query("UPDATE `bballtickets_config` SET `conventus_groupid`='".$_POST['conventus_groupid']."' WHERE `id`='1'");
          
 }
 
-if(isset($_POST['convensus_save'])){ 
+if(isset($_POST['conventus_save'])){ 
     
-    if($_POST['convensus_enabled'] == "on"){
-        $convensus_enabled = 1;
+    if($_POST['conventus_enabled'] == "on"){
+        $conventus_enabled = 1;
     }else{
-        $convensus_enabled = 0;
+        $conventus_enabled = 0;
     }
     
-    mysql_query("UPDATE `bballtickets_config` SET `convensus_enabled`='".$convensus_enabled."' WHERE `id`='1'");
+    mysql_query("UPDATE `bballtickets_config` SET `conventus_enabled`='".$conventus_enabled."' WHERE `id`='1'");
                 
 }
                  
@@ -107,8 +107,10 @@ if ($handle = opendir('templates/')) {
          if(($entry != ".") && ($entry != "..")){
                if($config['template'] == $entry){
                      $status = "selected";
+               }else{
+                     $status = "";
                }
-               echo '<option value"'.$entry.'" '.$status.'>'.$entry.'</option>';
+               echo '<option value="'.$entry.'" '.$status.'>'.$entry.'</option>';
          }
     }
 }
@@ -116,27 +118,27 @@ echo "</select>";
 echo "</form>";
 echo "<br><br>";
 
-if($config["convensus_enabled"] != 1){
+if($config["conventus_enabled"] != 1){
    
-   $useconvensus = "disabled";
+   $useconventus = "disabled";
 
 }else{
 
-   $convensusactive = "checked";
+   $conventusactive = "checked";
 
 }
 
-echo '<form method="post" name="convensus">';
-echo '<h3>Convensus aktiveret:</h3>
-     <input type="checkbox" name="convensus_enabled" '.$convensusactive.'>';
-echo '<h3>Convensus Foreningsid:</h3>
-      <input type="text" name="convensus_id" value="'.$config["convensus_id"].'" '.$useconvensus.'>';
-echo '<h3>Convensus Gruppetype:</h3>
-      <input type="text" name="convensus_grouptype" value="'.$config["convensus_grouptype"].'" '.$useconvensus.'>';
-echo '<h3>Convensus Gruppeid:</h3>
-      <input type="text" name="convensus_groupid" value="'.$config["convensus_groupid"].'" '.$useconvensus.'>';
+echo '<form method="post" name="conventus">';
+echo '<h3>Conventus aktiveret:</h3>
+     <input type="checkbox" name="conventus_enabled" '.$conventusactive.'>';
+echo '<h3>Conventus Foreningsid:</h3>
+      <input type="text" name="conventus_id" value="'.$config["conventus_id"].'" '.$useconventus.'>';
+echo '<h3>Conventus Gruppetype:</h3>
+      <input type="text" name="conventus_grouptype" value="'.$config["conventus_grouptype"].'" '.$useconventus.'>';
+echo '<h3>Conventus Gruppeid:</h3>
+      <input type="text" name="conventus_groupid" value="'.$config["conventus_groupid"].'" '.$useconventus.'>';
       
-echo '<br><input name="convensus_save" type="submit" value="Gem">
+echo '<br><input name="conventus_save" type="submit" value="Gem">
       </form><br><br>';
 
 

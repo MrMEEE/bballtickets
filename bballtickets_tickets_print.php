@@ -28,8 +28,9 @@ if(isset($_GET['ticketid'])){
 
         $TBS = new clsTinyButStrong;
         $TBS->Plugin(TBS_INSTALL, OPENTBS_PLUGIN);
-        $TBS->LoadTemplate('templates/'.$config['template']);
+        $TBS->LoadTemplate('templates/'.$config['template'], OPENTBS_ALREADY_UTF8);
         $name = $ticket['name'];
+        $name = str_replace("Conventus Bruger: ","",$name);
         $type = $type['name'];
         $barcode = "barcodes/".$cardcode.".jpg";
         $logo = "images/logo.jpg";
