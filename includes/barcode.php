@@ -1,8 +1,8 @@
 <?php
 	require("barcode.inc.php");
 
-	$encode=$_REQUEST['encode'];
-	$bar= new BARCODE();
+	//$encode=$_REQUEST['encode'];
+	$bar= new BARCODE($_REQUEST['encode']);
 	
 	if($bar==false)
 		die($bar->error());
@@ -22,8 +22,8 @@
 	$bar->setScale($_REQUEST['scale']);
 	$bar->setHexColor($_REQUEST['color'],$_REQUEST['bgcolor']);
 
-	/*$bar->setSymblogy("UPC-E");
-	$bar->setHeight(50);
+	$bar->setSymblogy($_REQUEST['encode']);
+	/*$bar->setHeight(50);
 	$bar->setFont("arial");
 	$bar->setScale(2);
 	$bar->setHexColor("#000000","#FFFFFF");*/

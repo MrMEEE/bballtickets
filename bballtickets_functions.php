@@ -61,8 +61,9 @@ $data = '';
 
 function generateBarcode($id){
 
+      $config = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_config` WHERE `id`=1"));
       require("../../config.php");
-      $url = "http://" . $klubadresse . $klubpath . "/admin/plugins/bballtickets/includes/barcode.php?encode=CODE39&bdata=".$id."&height=50&scale=2&bgcolor=%23FFFFFF&color=%23000000&file=&type=jpg&Genrate=Submit";
+      $url = "http://" . $klubadresse . $klubpath . "/admin/plugins/bballtickets/includes/barcode.php?encode=".$config['encode']."&bdata=".$id."&height=50&scale=2&bgcolor=%23FFFFFF&color=%23000000&file=&type=jpg&Genrate=Submit";
       file_put_contents("./barcodes/".$id.".jpg",file_get_contents($url));
 
 }

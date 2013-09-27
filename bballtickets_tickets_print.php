@@ -5,13 +5,7 @@ require("../../config.php");
 require("../../checkConfig.php");
 require("../../checkAdmin.php");
 
-function generateBarcode($id){
-
-      require("../../config.php");
-      $url = "http://" . $klubadresse . $klubpath . "/admin/plugins/bballtickets/includes/barcode.php?encode=CODE39&bdata=".$id."&height=50&scale=2&bgcolor=%23FFFFFF&color=%23000000&file=&type=jpg&Genrate=Submit";
-      file_put_contents("./barcodes/".$id.".jpg",file_get_contents($url));
-
-}
+require("bballtickets_functions.php");
 
 if(isset($_GET['ticketid'])){
         $ticket = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_tickets` WHERE `id`='".$_GET['ticketid']."'"));
