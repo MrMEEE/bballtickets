@@ -75,7 +75,7 @@ if(isset($_POST['ticketid'])){
       if($_POST['action'] == "remove"){
              $ticket = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_tickets` WHERE `id`='".$_POST['ticketid']."'"));
              $query = "DELETE FROM bballtickets_tickets WHERE id='".$_POST['ticketid']."'";
-             mysql_query("UPDATE `bballtickets_conventus` SET `ticketid`='' WHERE `ticketid`='".$ticket['ticketid']."'");
+             mysql_query("UPDATE `bballtickets_conventus` SET `ticketid`='' WHERE `ticketid`='".$ticket['id']."'");
       }elseif($_POST['ticketid']=="-1"){
              $query = "INSERT INTO bballtickets_tickets (`name`,`type`,`suspended`) VALUES ('".$_POST['name']."','".$_POST['type']."','0')";
       }else{
