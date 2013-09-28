@@ -37,7 +37,15 @@ switch($_POST['action']){
         echo $json;
         
     break;
-
+    case 'createTicket':
+        if(isset($_POST['createCID'])){
+            mysql_query("INSERT INTO `bballtickets_tickets` (`name`,`type`,`suspended`) VALUES ('Conventus Bruger: ".$_POST['CIDname']."','".$_POST['tickettype']."','0')");
+            $barcodeid = str_pad((int) $_POST['tickettype'],"4","0",STR_PAD_LEFT).str_pad((int) mysql_insert_id(),"10","0",STR_PAD_LEFT);
+            mysql_query("UPDATE `bballtickets_conventus` SET `ticketid`='".mysql_insert_id()."' WHERE `id`='".$_POST['createCID']."'");
+        }
+        $arr = array('barcodeid'=>$barcodeid);        
+        echo json_encode($arr);
+    break;
 
 }
 ?>

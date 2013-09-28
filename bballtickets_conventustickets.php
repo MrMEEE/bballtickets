@@ -118,12 +118,14 @@ echo '<tr>
 echo '<tr>
        <td>'.$person["id"].'</td>
        <td>'.$person["name"].'</td>
-       <td>';
+       <td id="ticketid-'.$person["id"].'">';
        
        if($person["ticketid"] == ""){
           echo '<div id="'.$person["id"].'">Opret billet</div>';
        }else{
-          echo $person["ticketid"];
+          $ticket = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_tickets` WHERE `id`='".$person["ticketid"]."'"));
+          $barcodeid = str_pad((int) $ticket['type'],"4","0",STR_PAD_LEFT).str_pad((int) $person["ticketid"],"10","0",STR_PAD_LEFT);
+          echo $barcodeid;
        }
        
        echo '</td>
@@ -166,6 +168,7 @@ echo '<form method="post" id="createticket">
        <input type="hidden" id="createCID" name="createCID">
        <input type="hidden" id="CIDname" name="CIDname">
        <input type="hidden" id="tickettype" name="tickettype">
+       <input type="hidden" id="action" name="action" value="createTicket">
       </form>';
 
 getThemeBottom();
@@ -179,7 +182,15 @@ $("#popupOk").click(function(e) {
   $("#tickettype").val($("#popupSelect").val());
   $("#CIDname").val($("#popupName").val());
   $("#popUpDiv").hide();
-  $("#createticket").submit();
+  var form = $("#createticket");
+  $.ajax({type: "POST", url: "ajax.php",dataType: "json",data: form.serialize(),success: function(data){
+    $.each(data, function(label,value){
+      $("#ticketid-"+$("#popupCID").val()).html(value);
+    }); 
+  }, error: function(xhr, status, err) {
+    alert(status + ": " + err);
+  }
+  });
 });
 
 $("#popupCancel").click(function(e) {
