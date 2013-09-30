@@ -51,8 +51,7 @@ switch($_POST['action']){
         foreach($_POST['checkbox'] as $checkbox){
             $conventus_user = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_conventus` WHERE `id`='".$checkbox."'"));
             if($conventus_user['ticketid'] == ""){
-            shell_exec('echo "'.$checkbox.':'.$conventus_user['ticketid'].'" >> /var/www/dommer/admin/Test');
-                mysql_query("INSERT INTO `bballtickets_tickets` (`name`,`type`,`suspended`) VALUES ('Conventus Bruger: ".$_conventus_user['name']."','".$_POST['tickettype-batch']."','0')");
+                mysql_query("INSERT INTO `bballtickets_tickets` (`name`,`type`,`suspended`) VALUES ('Conventus Bruger: ".$conventus_user['name']."','".$_POST['tickettype-batch']."','0')");
                 $barcodeid = str_pad((int) $_POST['tickettype-batch'],"4","0",STR_PAD_LEFT).str_pad((int) mysql_insert_id(),"10","0",STR_PAD_LEFT);
                 mysql_query("UPDATE `bballtickets_conventus` SET `ticketid`='".mysql_insert_id()."' WHERE `id`='".$checkbox."'");
                 $arr[$checkbox] = $barcodeid; 
