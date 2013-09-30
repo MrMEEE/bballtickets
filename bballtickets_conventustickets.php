@@ -14,7 +14,23 @@ getThemeHeader();
 
 ?>
 
+function goBatch(){
+   
+ document.ticketlist.submit();
+      
+}
+
 <?php
+
+getThemeTitle("Conventus Billetter/Kort");
+
+if($_POST['action'] == "barcodelist"){
+
+ foreach($_POST['checkbox'] as $checkbox){
+    echo $checkbox . '<br>';
+ }
+
+}
 
 if(isset($_POST['createCID'])){
 
@@ -22,8 +38,6 @@ if(isset($_POST['createCID'])){
    $barcodeid = str_pad((int) $_POST['tickettype'],"4","0",STR_PAD_LEFT).str_pad((int) mysql_insert_id(),"10","0",STR_PAD_LEFT);
    mysql_query("UPDATE `bballtickets_conventus` SET `ticketid`='".$barcodeid."' WHERE `id`='".$_POST['createCID']."'");
 }
-
-getThemeTitle("Conventus Billetter/Kort");
 
 $config = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_config` WHERE `id`=1"));
 
@@ -87,13 +101,22 @@ require("bballtickets_check_database.php");
 
 echo $message;
 
+echo '<div id="test"></div>';
+
 echo '<form method="post">
       <input type="submit" name="conventus_sync" value="Sync fra Conventus">
       </form><br><br>';
 
-
-echo '<table>
+echo '<form name="ticketlist" id="ticketlist" method="post">
+      <select name="action" id="batchAction">
+       <option value="-" selected>Vælg operation</option>
+       <option value="createTickets">Opret kort</option>
+      </select>
+      <input type="hidden" name="tickettype-batch" id="tickettype-batch">
+      <br><br>
+      <table>
        <tr>
+        <th width="30px" align="left"><input type="checkbox" id="checkall"></th>
         <th width="70px" align="left">CID</th>
         <th width="200px" align="left">Navn</th>
         <th width="100px" align="left">Billet</th>
@@ -116,6 +139,7 @@ echo '<tr>
 }
 
 echo '<tr>
+       <td><input id="checkbox-'.$person["id"].'" type="checkbox" value="'.$person["id"].'" name="checkbox[]"></td>
        <td>'.$person["id"].'</td>
        <td>'.$person["name"].'</td>
        <td id="ticketid-'.$person["id"].'">';
@@ -145,6 +169,8 @@ $("#'.$person["id"].'").click(function(e) {
 
 }
 
+echo '</table></form><br><br>';
+
 echo '<div id="popUpDiv">
       
       <select id="popupSelect">';
@@ -154,6 +180,7 @@ echo '<div id="popUpDiv">
          echo '<option value="'.$tickettype['id'].'">'.$tickettype['name'].'</option>';
       }
 
+
 echo  '</select>
       <input type="submit" id="popupOk" value="OK">
       <input type="submit" id="popupCancel" value="Annuller">
@@ -161,8 +188,6 @@ echo  '</select>
       <input type="hidden" id="popupCID">
       <div id="popupContent"></div>
       </div>';
-
-echo '</table><br><br>';
 
 echo '<form method="post" id="createticket">
        <input type="hidden" id="createCID" name="createCID">
@@ -177,24 +202,47 @@ getThemeBottom();
 
 <script>
 
+$("#checkall").change(function(e){
+ if($("#checkall").is(':checked')){
+  $("input[id*='checkbox-']").attr('checked', true);
+ }else{
+  $("input[id*='checkbox-']").attr('checked', false);
+ }
+});
+
+$("#batchAction").change(function(e) {
+ $("#popupContent").html("Opret Kort/Billet for de valgte personer");
+ $("#popupName").val("");
+ $("#popupCID").val("");
+ $("#popUpDiv").show();
+});
+
 $("#popupOk").click(function(e) {
   $("#createCID").val($("#popupCID").val());
   $("#tickettype").val($("#popupSelect").val());
+  $("#tickettype-batch").val($("#popupSelect").val());
   $("#CIDname").val($("#popupName").val());
   $("#popUpDiv").hide();
-  var form = $("#createticket");
+  if($("#popupContent").html() == "Opret Kort/Billet for de valgte personer"){
+   var form = $("#ticketlist");
+  }else{
+   var form = $("#createticket");
+  }
   $.ajax({type: "POST", url: "ajax.php",dataType: "json",data: form.serialize(),success: function(data){
     $.each(data, function(label,value){
-      $("#ticketid-"+$("#popupCID").val()).html(value);
+      $("#ticketid-"+label).html(value);
+      $("#checkbox-"+label).attr('checked', false);
     }); 
   }, error: function(xhr, status, err) {
     alert(status + ": " + err);
   }
   });
+  $("#batchAction").val("-");  
 });
 
 $("#popupCancel").click(function(e) {
   $("#popUpDiv").hide();
+  $("#batchAction").val("-");
 });
 
 </script>
