@@ -61,6 +61,8 @@ if(isset($_POST['clientid'])){
 }else{
 
 if(isset($_POST['action'])){
+     require("../../checkLogin.php");
+     require("../../checkAdmin.php");
      switch ($_POST['action']) {
      case "unapprove":
           mysql_query("UPDATE `bballtickets_clients` SET `approved`=0 WHERE `clientid`='".$_POST['client']."'");

@@ -2,6 +2,8 @@
 
 $config = mysql_fetch_assoc(mysql_query("SELECT * FROM `bballtickets_config` WHERE `id`=1"));
 
+if (checkAdmin($_SESSION['username'])){
+
 echo '
 <li class="dir">Billetter
         <ul>
@@ -19,5 +21,7 @@ echo                  '<li><a href="http://' . $klubadresse . $klubpath . '/admi
                   <li class="last"><a href="http://' . $klubadresse . $klubpath . '/admin/plugins/bballtickets/bballtickets_config.php">Konfiguration</a></li>
         </ul>
 </li>';
+
+}
 
 ?>
